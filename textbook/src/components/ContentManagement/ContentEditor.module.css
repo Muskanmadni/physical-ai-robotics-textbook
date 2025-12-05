@@ -1,0 +1,81 @@
+.contentEditor {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  background-color: #fff;
+}
+
+.editorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.editButton {
+  margin-right: 10px;
+}
+
+.editControls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.saveButton, .cancelButton {
+  margin-right: 5px;
+}
+
+.saveStatus {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.saveStatus.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.saveStatus.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.editorContainer {
+  width: 100%;
+}
+
+.textarea {
+  width: 100%;
+  font-family: monospace;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.contentDisplay {
+  padding: 0.5rem;
+  min-height: 100px;
+}
+
+.markdownHelp {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.markdownHelp ul {
+  margin-bottom: 0;
+  padding-left: 1.5rem;
+}
+
+.markdownHelp details {
+  cursor: pointer;
+}

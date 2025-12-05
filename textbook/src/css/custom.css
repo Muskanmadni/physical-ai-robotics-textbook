@@ -1,0 +1,97 @@
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/* You can override the default Docusaurus variables here. */
+:root {
+  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary-dark: #21af90;
+  --ifm-color-primary-darker: #1fa588;
+  --ifm-color-primary-darkest: #1a8870;
+  --ifm-color-primary-light: #29d5b0;
+  --ifm-color-primary-lighter: #32d8b4;
+  --ifm-color-primary-lightest: #4fddbf;
+  --ifm-code-font-size: 95%;
+}
+
+/* WCAG 2.1 AA Compliant Styles */
+/* Ensure sufficient color contrast ratios */
+.docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+html[data-theme='dark'] .docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure focus indicators are visible for keyboard navigation */
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+[tabindex]:focus {
+  outline: 2px solid #25c2a0;
+  outline-offset: 2px;
+}
+
+/* Improve readability */
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.markdown p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Ensure images have appropriate text alternatives */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure proper spacing for accessibility */
+.card {
+  margin-bottom: 1rem;
+}
+
+/* For Urdu text (RTL support) */
+.urdu-text {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Custom styles for personalization features */
+.personalized-content {
+  border-left: 3px solid #25c2a0;
+  padding-left: 1rem;
+  margin-left: 0;
+}
+
+/* Custom styles for RAG search results */
+.rag-search-result {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Translation toggle button */
+.translation-toggle {
+  margin-bottom: 1rem;
+  text-align: center;
+}
