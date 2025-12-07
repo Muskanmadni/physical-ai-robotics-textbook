@@ -33,7 +33,8 @@ const RagChat = () => {
 
     try {
       // Call the RAG backend API
-      const response = await fetch('http://localhost:8000/api/rag/query', {
+      const BACKEND_URL = process.env.REACT_APP_RAG_BACKEND_URL || 'https://physical-ai-robotics-textbook-d7w9.vercel.app';
+      const response = await fetch(`${BACKEND_URL}/api/rag/query`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
