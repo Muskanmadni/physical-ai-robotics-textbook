@@ -20,14 +20,14 @@ const config = {
   },
 
   // Set the production url of your site here
-  url: 'https://your-username.github.io',
+  url: 'https://Muskanmadni.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'your-username', // Usually your GitHub org/user name.
+  organizationName: 'Muskanmadni', // Usually your GitHub org/user name.
   projectName: 'physical-ai-humanoid-robotics-textbook', // Usually your repo name.
 
   onBrokenLinks: 'throw',
@@ -50,23 +50,9 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/your-username/physical-ai-humanoid-robotics-textbook',
+            'https://github.com/Muskanmadni/physical-ai-humanoid-robotics-textbook',
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/your-username/physical-ai-humanoid-robotics-textbook',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        blog: false, // Disable blog functionality
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -84,10 +70,6 @@ const config = {
       },
       navbar: {
         title: 'Physical AI & Humanoid Robotics',
-        logo: {
-          alt: 'Textbook Logo',
-          src: 'img/logo.svg',
-        },
         items: [
           {
             type: 'docSidebar',
@@ -95,15 +77,9 @@ const config = {
             position: 'left',
             label: 'Textbook',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+          {to: '/chat', label: 'Chat Assistant', position: 'left'},
           {
-            to: '/admin',
-            label: 'Admin',
-            position: 'left',
-            // Only show if user is authenticated as admin (in a real implementation)
-          },
-          {
-            href: 'https://github.com/your-username/physical-ai-humanoid-robotics-textbook',
+            href: 'https://github.com/Muskanmadni',
             label: 'GitHub',
             position: 'right',
           },
@@ -119,38 +95,18 @@ const config = {
                 label: 'Introduction',
                 to: '/docs/intro',
               },
-              {
-                label: 'ROS 2',
-                to: '/docs/ros2/',
-              },
-              {
-                label: 'Gazebo/Unity Simulation',
-                to: '/docs/gazebo-unity/',
-              },
-              {
-                label: 'NVIDIA Isaac Robotics',
-                to: '/docs/nvidia-isaac/',
-              },
-              {
-                label: 'Vision-Language-Action Systems',
-                to: '/docs/vla-systems/',
-              },
-              {
-                label: 'Conclusion',
-                to: '/docs/conclusion',
-              },
             ],
           },
           {
             title: 'Community',
             items: [
               {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
+                label: 'LinkedIn',
+                href: 'https://www.linkedin.com/in/umm-e-habiba-733838277?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
               },
               {
-                label: 'GitHub Discussions',
-                href: 'https://github.com/your-username/physical-ai-humanoid-robotics-textbook/discussions',
+                label: 'Twitter/X',
+                href: 'https://x.com/habiba0088?t=lSvsWb2ju3bNXBr1pKwG8Q&s=09',
               },
             ],
           },
@@ -158,17 +114,17 @@ const config = {
             title: 'More',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+                label: 'GitHub',
+                href: 'https://github.com/Muskanmadni/physical-ai-humanoid-robotics-textbook',
               },
               {
-                label: 'GitHub',
-                href: 'https://github.com/your-username/physical-ai-humanoid-robotics-textbook',
+                label: 'My GitHub Profile',
+                href: 'https://github.com/Muskanmadni',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook. Licensed under MIT.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook. Licensed under MIT. Created by Umm-e-habiba`,
       },
       prism: {
         theme: prismThemes.github,

@@ -106,7 +106,7 @@ Examples of foundational tasks (adjust based on your project):
 **Independent Test**: Authentication, personalization, or Urdu translation features can be implemented and tested separately without affecting basic textbook navigation.
 
 ### Implementation for User Story 2
-- [X] T023 [P] [US2] Set up Better-Auth integration in the FastAPI backend
+- [X] T023 [P] [US2] Set up authentication integration in the FastAPI backend
 - [X] T024 [US2] Implement user authentication endpoints following API contracts
 - [X] T025 [US2] Create User model and database schema in backend following data model
 - [X] T026 [US2] Implement user profile management following API contracts
@@ -144,7 +144,7 @@ Examples of foundational tasks (adjust based on your project):
 ### Implementation for RAG System
 - [X] T037 [P] Set up Neon PostgreSQL database for metadata
 - [X] T038 [P] Configure Qdrant vector database for RAG
-- [X] T039 Set up embedding pipeline for textbook content
+- [X] T039 [P] Set up embedding pipeline for textbook content
 - [X] T040 Create RAGDocument model following data model
 - [X] T041 Implement RAG query API endpoint as specified in contracts
 - [X] T042 Add RAG-powered search functionality to textbook frontend
