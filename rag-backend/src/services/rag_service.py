@@ -12,19 +12,28 @@ logger = logging.getLogger(__name__)
 
 class RAGService:
     def __init__(self):
-        # Initialize Qdrant client with your credentials
-        qdrant_url = "https://ac35b1d0-4133-4e8e-a0f1-c88002cfdfc2.us-east4-0.gcp.cloud.qdrant.io:6333"
-        qdrant_api_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.PkN24IecNCoE4V0lFCtgow3A_XH7mc1maS8BeWZpWBQ"
+        # Initialize Qdrant client with credentials from environment variables
+        qdrant_url = os.getenv("QDRANT_URL", "https://ac35b1d0-4133-4e8e-a0f1-c88002cfdfc2.us-east4-0.gcp.cloud.qdrant.io:6333")
+        qdrant_api_key = os.getenv("QDRANT_API_KEY")
+
+        if not qdrant_api_key:
+            raise ValueError("QDRANT_API_KEY environment variable is required")
 
         self.qdrant_client = QdrantClient(url=qdrant_url, api_key=qdrant_api_key)
 
         # Initialize Cohere client for embeddings
-        cohere_api_key = "WhKEKkGHtUHVAY863wnUpkSWY8Zadz6MWRcB4fST"
+        cohere_api_key = os.getenv("COHERE_API_KEY")
+        if not cohere_api_key:
+            raise ValueError("COHERE_API_KEY environment variable is required")
+
         self.cohere_client = CohereClient(api_key=cohere_api_key)
         self.embed_model = "embed-english-v3.0"
 
         # Initialize Gemini client for response generation
-        gemini_api_key = "AIzaSyAcXXYDnrHScj3MCQ2G5eOJ20Ns_R6-0Xk"
+        gemini_api_key = os.getenv("GOOGLE_API_KEY")
+        if not gemini_api_key:
+            raise ValueError("GOOGLE_API_KEY environment variable is required")
+
         genai.configure(api_key=gemini_api_key)
         self.gemini_model = genai.GenerativeModel('gemini-2.5-flash')
 
