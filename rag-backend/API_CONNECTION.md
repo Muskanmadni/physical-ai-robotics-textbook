@@ -97,6 +97,34 @@ queryRAG("What is Physical AI?").then(result => {
 - Ensure your frontend is making requests with proper CORS headers
 - Verify that the vector database is properly configured and accessible
 
+## Deployment Instructions
+
+1. Deploy the RAG backend to Vercel:
+   - Go to https://vercel.com/
+   - Import your GitHub repo containing the rag-backend
+   - Make sure the Root Directory is set to the rag-backend folder
+   - Add the required environment variables during deployment
+
+2. Configure environment variables in Vercel:
+   - `QDRANT_URL` - URL for Qdrant vector database
+   - `QDRANT_API_KEY` - API key for Qdrant
+   - `COHERE_API_KEY` - API key for Cohere embeddings
+   - `GOOGLE_API_KEY` - API key for Google Gemini
+
+3. Once deployed, note the unique URL assigned to your RAG backend (it will look like `https://your-rag-backend-project-name.vercel.app`)
+
+4. To connect your frontend:
+   - Set the `REACT_APP_RAG_BACKEND_URL` environment variable in your frontend deployment to your RAG backend URL
+   - Or update the fallback URL in src/components/RagChat/RagChat.js if deploying locally
+
+## Testing Your Deployment
+
+After deployment, you can test your API endpoints using the provided test script:
+
+```bash
+node test_rag_api.js https://your-rag-backend-project-name.vercel.app
+```
+
 ## Additional Notes
 
 - The backend requires Python >=3.9 due to the google-generativeai dependency. This is handled automatically in the Vercel deployment.

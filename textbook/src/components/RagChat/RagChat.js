@@ -33,7 +33,10 @@ const RagChat = () => {
 
     try {
       // Call the RAG backend API
-      const BACKEND_URL = process.env.REACT_APP_RAG_BACKEND_URL || 'https://physical-ai-robotics-textbook-d7w9.vercel.app';
+      // IMPORTANT: Replace 'YOUR_RAG_BACKEND_URL_HERE' with your actual deployed RAG backend URL
+      // Or set the REACT_APP_RAG_BACKEND_URL environment variable in your deployment
+      // Example: https://your-rag-backend-project-name.vercel.app
+      const BACKEND_URL = process.env.REACT_APP_RAG_BACKEND_URL || 'YOUR_RAG_BACKEND_URL_HERE';
       const response = await fetch(`${BACKEND_URL}/api/rag/query`, {
         method: 'POST',
         headers: {
