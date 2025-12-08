@@ -11,8 +11,8 @@ sys.path.insert(0, str(src_path))
 from src.services.rag_service import RAGService
 from src.models.rag_models import RAGQueryRequest
 
-# Initialize the RAG service
-rag_service = RAGService()
+# RAG service will be initialized on first use
+rag_service = None
 
 # For Vercel Python Serverless Functions
 def handler(event, context):
@@ -44,12 +44,17 @@ def handler(event, context):
         elif http_method == 'POST' and path == '/api/rag/query':
             # Handle RAG query requests
             if body:
+                # Initialize RAG service if not already done
+                global rag_service
+                if rag_service is None:
+                    rag_service = RAGService()
+
                 request_data = json.loads(body)
-                
+
                 # Create a RAGQueryRequest object
-                query_request = RAGQueryRequest(query=request_data.get('query', ''), 
-                                             context_size=request_data.get('context_size', 3))
-                
+                query_request = RAGQueryRequest(query=request_data.get('query', ''),
+                                             userId=request_data.get('userId'))
+
                 # Perform the RAG query
                 import asyncio
                 response = asyncio.run(rag_service.query_rag(query_request))
@@ -79,12 +84,17 @@ def handler(event, context):
         elif http_method == 'POST' and path == '/api/rag/index':
             # Handle content indexing requests
             if body:
+                # Initialize RAG service if not already done
+                global rag_service
+                if rag_service is None:
+                    rag_service = RAGService()
+
                 request_data = json.loads(body)
-                
+
                 chapter_id = request_data.get('chapter_id')
                 title = request_data.get('title')
                 content = request_data.get('content')
-                
+
                 if not all([chapter_id, title, content]):
                     return {
                         'statusCode': 400,
@@ -96,7 +106,7 @@ def handler(event, context):
                         },
                         'body': json.dumps({'error': 'Missing required fields'})
                     }
-                
+
                 # Index the content
                 import asyncio
                 asyncio.run(rag_service.index_textbook_content(chapter_id, title, content))
@@ -138,6 +148,8 @@ def handler(event, context):
     
     except Exception as e:
         # Handle any errors
+        import traceback
+        print(traceback.format_exc())  # Print the full traceback for debugging
         return {
             'statusCode': 500,
             'headers': {
