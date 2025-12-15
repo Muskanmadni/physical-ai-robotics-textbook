@@ -60,9 +60,6 @@ class QueryRequest(BaseModel):
     query_text: str
     top_k: int = 5
 
-class QueryResponse(BaseModel):
-    results: List[Dict[str, Any]]
-
 class AIResponseRequest(BaseModel):
     query: str
     context: str = ""
@@ -418,64 +415,17 @@ def get_job_status(job_id: str):
     return indexing_jobs[job_id]
 
 
-@app.post("/query", response_model=QueryResponse)
-def query_documents(request: QueryRequest):
-    """
-    Query the vector database for similar content
-    """
-    try:
-        # Initialize Cohere and Qdrant clients
-        cohere_client = cohere.Client(os.getenv("COHERE_API_KEY"))
-        qdrant_client = QdrantClient(
-            url=os.getenv("QDRANT_URL"),
-            api_key=os.getenv("QDRANT_API_KEY")
-        )
-
-        # Generate embedding for the query text
-        query_embedding = cohere_client.embed(
-            texts=[request.query_text],
-            model="embed-multilingual-v3.0",
-            input_type="search_query"
-        ).embeddings[0]
-
-        # Search in Qdrant
-        search_results = qdrant_client.search(
-            collection_name="rag_embeddings",
-            query_vector=query_embedding,
-            limit=request.top_k,
-            with_payload=True
-        )
-
-        # Format results
-        results = []
-        for result in search_results:
-            results.append({
-                "id": result.id,
-                "url": result.payload.get("url", ""),
-                "title": result.payload.get("title", ""),
-                "content": result.payload.get("content", ""),
-                "content_length": result.payload.get("content_length", 0),
-                "score": result.score
-            })
-
-        return QueryResponse(results=results)
-
-    except Exception as e:
-        logger.error(f"Query failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Query failed: {str(e)}")
-
-
-@app.post("/query/")
-async def query_endpoint(request: Request):
+@app.post("/query")
+async def query_documents(request: Request):
     """
     Query endpoint that matches frontend expectations
-    Expected input: {"query": "question", "top_k": 3}
+    Expected input: {"query_text": "question", "top_k": 3}
     Returns: {"answer": "...", "sources": [...]}
     """
     try:
-        # Extract query and top_k from request
+        # Parse the request to get query_text and top_k
         request_json = await request.json()
-        query_text = request_json.get("query", "")
+        query_text = request_json.get("query_text", "")
         top_k = request_json.get("top_k", 5)
 
         # Initialize Cohere and Qdrant clients
@@ -535,6 +485,7 @@ async def query_endpoint(request: Request):
     except Exception as e:
         logger.error(f"Query failed: {e}")
         raise HTTPException(status_code=500, detail=f"Query failed: {str(e)}")
+
 
 
 @app.get("/collections")

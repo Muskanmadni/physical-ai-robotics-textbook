@@ -35,24 +35,58 @@ const RagChat = () => {
     try {
       const data = await apiService.query(inputValue, 3);
 
-      // Map the backend response format to what the frontend expects
-      // Backend returns: { answer: "...", sources: [...] }
-      // Frontend expects: { response: "...", sources: [...] }
-      const botMessage = {
-        id: Date.now() + 1,
-        text: data.answer || data.response || "No response text received from server",
-        sender: 'bot',
-        sources: (data.sources || []).map(source => ({
-          // Backend returns: { text, source, title }
-          // Frontend expects: { title, relevance }
-          title: source.title || source.source || "Unknown Source",
-          relevance: source.similarity || source.score || 0.8, // Assigning a default relevance
-          text: source.text ? (source.text.length > 100 ? source.text.substring(0, 100) + "..." : source.text) : ""
-        })),
-        timestamp: new Date()
-      };
+      // Debug: Log the actual response from the backend
+      console.log("Backend response:", data);
 
-      setMessages(prev => [...prev, botMessage]);
+      // Check if the response contains an error or detail field indicating timeout
+      if (data.detail) {
+        const errorMessage = {
+          id: Date.now() + 1,
+          text: `Server response: ${data.detail}`,
+          sender: 'bot',
+          timestamp: new Date()
+        };
+
+        setMessages(prev => [...prev, errorMessage]);
+      } else {
+        // Check if the response data has any keys at all
+        console.log("Response data keys:", Object.keys(data));
+        console.log("Response data type:", typeof data);
+
+        // Map the backend response format to what the frontend expects
+        // Check for various possible field names the backend might return
+        let responseText = "No response text received from server";
+
+        if (data && typeof data === 'object') {
+          responseText = data.answer ||
+                        data.response ||
+                        data.text ||
+                        data.result ||
+                        data.output ||
+                        (data.detail && !data.detail.includes('Query failed') ? data.detail : null) ||
+                        "No response text received from server";
+        } else if (data && typeof data === 'string') {
+          responseText = data;
+        }
+
+        console.log("Selected response text:", responseText);
+
+        const botMessage = {
+          id: Date.now() + 1,
+          text: responseText,
+          sender: 'bot',
+          sources: (data.sources || data.context || []).map(source => ({
+            title: source.title || source.source || source.document || "Unknown Source",
+            relevance: source.similarity || source.score || source.relevance || 0.8, // Assigning a default relevance
+            text: source.text || source.content ? (source.text || source.content).length > 100 ?
+              (source.text || source.content).substring(0, 100) + "..." :
+              (source.text || source.content) : ""
+          })),
+          timestamp: new Date()
+        };
+
+        setMessages(prev => [...prev, botMessage]);
+      }
     } catch (error) {
       console.error('Error fetching response:', error);
 
