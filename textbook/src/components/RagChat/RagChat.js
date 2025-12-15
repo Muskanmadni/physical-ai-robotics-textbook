@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import apiService from '../../services/api';
 import './RagChat.css';
 
 const RagChat = () => {
@@ -32,47 +33,36 @@ const RagChat = () => {
     setIsLoading(true);
 
     try {
-      // Call the RAG backend API
-      // IMPORTANT: Replace 'YOUR_RAG_BACKEND_URL_HERE' with your actual deployed RAG backend URL
-      // Or set the REACT_APP_RAG_BACKEND_URL environment variable in your deployment
-      // Example: https://your-rag-backend-project-name.vercel.app
-      const BACKEND_URL = process.env.REACT_APP_RAG_BACKEND_URL || 'YOUR_RAG_BACKEND_URL_HERE';
-      const response = await fetch(`${BACKEND_URL}/api/rag/query`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: inputValue
-        })
-      });
+      const data = await apiService.query(inputValue, 3);
 
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      // Add bot response to the chat
+      // Map the backend response format to what the frontend expects
+      // Backend returns: { answer: "...", sources: [...] }
+      // Frontend expects: { response: "...", sources: [...] }
       const botMessage = {
         id: Date.now() + 1,
-        text: data.response,
+        text: data.answer || data.response || "No response text received from server",
         sender: 'bot',
-        sources: data.sources || [],
+        sources: (data.sources || []).map(source => ({
+          // Backend returns: { text, source, title }
+          // Frontend expects: { title, relevance }
+          title: source.title || source.source || "Unknown Source",
+          relevance: source.similarity || source.score || 0.8, // Assigning a default relevance
+          text: source.text ? (source.text.length > 100 ? source.text.substring(0, 100) + "..." : source.text) : ""
+        })),
         timestamp: new Date()
       };
 
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
       console.error('Error fetching response:', error);
-      
+
       const errorMessage = {
         id: Date.now() + 1,
-        text: "Sorry, I encountered an error while processing your request. Please try again.",
+        text: `Sorry, I encountered an error while processing your request: ${error.message}. Please try again.`,
         sender: 'bot',
         timestamp: new Date()
       };
-      
+
       setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
@@ -85,7 +75,7 @@ const RagChat = () => {
         <h3>Physical AI & Humanoid Robotics Assistant</h3>
         <p>Ask me anything about the textbook content</p>
       </div>
-      
+
       <div className="rag-chat-messages">
         {messages.length === 0 ? (
           <div className="rag-chat-welcome">
@@ -112,7 +102,10 @@ const RagChat = () => {
                       {message.sources.slice(0, 3).map((source, index) => (
                         <li key={index}>
                           <strong>{source.title}</strong>
-                          (Relevance: {(source.relevance * 100).toFixed(1)}%)
+                          {source.text && <p><small>{source.text}</small></p>}
+                          {source.relevance !== undefined && (
+                            <p><small>Relevance: {(source.relevance * 100).toFixed(1)}%</small></p>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -135,7 +128,7 @@ const RagChat = () => {
         )}
         <div ref={messagesEndRef} />
       </div>
-      
+
       <form className="rag-chat-input-form" onSubmit={handleSubmit}>
         <input
           type="text"
