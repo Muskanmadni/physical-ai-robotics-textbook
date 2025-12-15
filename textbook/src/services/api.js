@@ -1,7 +1,7 @@
 // src/services/api.js
 // API service to communicate with the backend embedding pipeline
 
-const BACKEND_URL = 'https://my-doc-backend-kww0.onrender.com';  // Deployed backend URL
+const BACKEND_URL = 'http://localhost:8000';  // Default backend URL
 
 class ApiService {
   async query(question, topK = 3) {
