@@ -1,12 +1,12 @@
 // src/services/api.js
 // API service to communicate with the backend embedding pipeline
 
-const BACKEND_URL = 'https://my-doc-backend-kww0.onrender.com/';  // Default backend URL
+const BACKEND_URL = 'https://my-doc-backend-kww0.onrender.com';  // Default backend URL
 
 class ApiService {
   async query(question, topK = 3) {
     try {
-      const response = await fetch(`${BACKEND_URL}/query/`, {
+      const response = await fetch(`${BACKEND_URL}/query`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ class ApiService {
 
   async createCollection(collectionName) {
     try {
-      const response = await fetch(`${BACKEND_URL}/create-collection/`, {
+      const response = await fetch(`${BACKEND_URL}/create-collection`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
