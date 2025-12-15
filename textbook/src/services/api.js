@@ -12,7 +12,7 @@ class ApiService {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          query: question,
+          query_text: question,
           top_k: topK
         })
       });
