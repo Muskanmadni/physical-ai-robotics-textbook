@@ -1,10 +1,10 @@
-cohere==5.5.8
-qdrant-client==1.9.0
+cohere==5.10.0
+qdrant-client==1.11.2
 beautifulsoup4==4.12.3
-requests==2.31.0
+requests==2.32.3
 python-dotenv==1.0.1
-lxml==4.9.4
-fastapi==0.104.1
-uvicorn==0.24.0
-pydantic==2.5.0
+lxml==5.2.2
+fastapi==0.115.0
+uvicorn==0.32.0
+pydantic==2.9.2
 google-generativeai==0.8.4

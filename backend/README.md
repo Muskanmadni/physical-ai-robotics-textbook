@@ -123,4 +123,72 @@ The system includes robust error handling:
 - Cohere API rate limit handling
 - Database connection recovery strategies
 - Progress tracking to allow resumption after failures
-- Structured logging for all pipeline stages"# docs-backend" 
+- Structured logging for all pipeline stages
+
+## Deploying to Render
+
+This application uses a Dockerfile to handle deployment to Render, which resolves potential Rust compilation issues that may occur during package installation.
+
+### Known Issue Resolution
+
+If you encounter the following error during deployment:
+
+```
+Preparing metadata (pyproject.toml): finished with status 'error'
+error: subprocess-exited-with-error
+× Preparing metadata (pyproject.toml) did not run successfully.
+│ exit code: 1
+╰─> [14 lines of output]
+        Updating crates.io index
+    warning: failed to write cache, path: /usr/local/cargo/registry/index/index.crates.io-1949cf8c6b5b557f/.cache/ah/as/ahash, error: Read-only file system (os error 30)
+     Downloading crates ...
+      Downloaded cfg-if v1.0.0
+    error: failed to create directory `/usr/local/cargo/registry/cache/index.crates.io-1949cf8c6b5b557f`
+
+    Caused by:
+      Read-only file system (os error 30)
+```
+
+This is caused by certain Python packages (like those with Rust dependencies) attempting to compile during installation. Our Dockerfile addresses this by:
+
+1. Installing system dependencies needed for compilation
+2. Using a Docker container with the necessary tools available
+3. Upgrading pip to use the latest installation methods
+
+## Local Development
+
+To run locally:
+
+```bash
+# Create virtual environment
+python -m venv .venv
+
+# Activate virtual environment
+# On Windows:
+.venv\Scripts\activate
+# On macOS/Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variables
+cp .env.example .env
+# Edit .env with your API keys
+
+# Run the application
+uvicorn main:app --reload --port 8000
+```
+
+## Environment Variables
+
+Create a `.env` file with the following variables:
+
+```
+GEMINI_API_KEY=your_google_gemini_api_key
+COHERE_API_KEY=your_cohere_api_key
+QDRANT_URL=your_qdrant_url
+QDRANT_API_KEY=your_qdrant_api_key
+TARGET_SITE_URL=https://physical-ai-robotics-textbook-three.vercel.app/
+SITEMAP_URL=https://physical-ai-robotics-textbook-three.vercel.app/sitemap.xml
+```

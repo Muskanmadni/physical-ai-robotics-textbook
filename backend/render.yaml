@@ -1,0 +1,12 @@
+services:
+- type: web
+  name: ai-book-backend
+  env: docker
+  region: oregon
+  dockerfilePath: ./Dockerfile
+  autoDeploy: false
+  envVars:
+  - key: PYTHONPATH
+    value: /app
+  - key: PORT
+    value: 8000
